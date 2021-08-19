@@ -1,7 +1,8 @@
 package com.cinema;
 
-import java.util.LinkedList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 class Seat {
     int row;
@@ -52,7 +53,8 @@ public class Cinema {
     private int total_columns;
     private boolean[][] isReserved;
 
-    private List<Seat> available_seats;
+//    private List<Seat> available_seats;
+    private Collection<Seat> available_seats;
 
 
      Cinema() {
@@ -61,14 +63,15 @@ public class Cinema {
         this.total_columns = noOfSeat;
 
         isReserved = new boolean[this.total_rows][this.total_columns];
-        List<Seat> temp = new LinkedList<>();
+
+        available_seats = new ConcurrentLinkedQueue<>();
 
         for (int i = 1; i <= noOfSeat; i++) {
             for (int j = 1; j <= noOfSeat; j++) {
-                temp.add(new Seat(i, j));
+                available_seats.add(new Seat(i, j));
             }
         }
-        this.available_seats = List.copyOf(temp);
+
     }
 
     public Cinema(int total_columns, int total_rows) {
@@ -85,7 +88,7 @@ public class Cinema {
         return total_columns;
     }
 
-    public List<Seat> getAvailable_seats() {
+    public Collection<Seat> getAvailable_seats() {
         return available_seats;
     }
 
@@ -102,8 +105,14 @@ public class Cinema {
         this.available_seats = available_seats;
     }
 
-    public void reservedSeat(int row, int column) {
+
+
+    public Seat reservedSeat(int row, int column) {
+
+        Seat reservedSeat = new Seat(row, column);
         this.isReserved[--row][--column] = true;
+        available_seats.remove(reservedSeat);
+        return reservedSeat;
     }
 
     public boolean isSeatReserved (int row, int column) {

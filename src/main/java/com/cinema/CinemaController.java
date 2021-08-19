@@ -15,13 +15,15 @@ public class CinemaController {
     Cinema cinema = new Cinema();
 
     @PostMapping("/purchase")
-    public void purchaseTicket(@RequestParam int row, int column) {
-        if (cinema.getTotal_rows()<= row || cinema.getTotal_columns()<= row) {
-            throw new SeatNotFoundException("The number of a row or a column is out of bounds!");
-        }
-        if (cinema.isSeatReserved(row, column)) {
+    public Seat purchaseTicket(@RequestBody int row, int column) {
+//        if (cinema.getTotal_rows()<= row || cinema.getTotal_columns()<= row) {
+//            throw new SeatNotFoundException("The number of a row or a column is out of bounds!");
+//        }
+//        if (cinema.isSeatReserved(row, column)) {
+//            throw new SeatNotFoundException("The ticket has been already purchased!");
+//        }
 
-        }
+        return cinema.reservedSeat(row, column);
     }
     
 
