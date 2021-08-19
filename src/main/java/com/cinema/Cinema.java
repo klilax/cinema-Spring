@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 class Seat {
     int row;
     int column;
-    int price;
+
 
     public Seat() {
 
@@ -15,11 +15,6 @@ class Seat {
      Seat(int row, int column) {
         this.row = row;
         this.column = column;
-        if (this.row <= 4) {
-            this.price = 10;
-        } else {
-            this.price = 8;
-        }
     }
 
     public void setRow(int row) {
@@ -28,14 +23,6 @@ class Seat {
 
     public void setColumn(int column) {
         this.column = column;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getPrice() {
-        return price;
     }
 
     public int getRow() {
@@ -47,14 +34,36 @@ class Seat {
     }
 }
 
+class CinemaSeat extends Seat {
+    int price;
+
+    CinemaSeat(int row, int column) {
+        super(row, column);
+        if (this.row <= 4) {
+            this.price = 10;
+        } else {
+            this.price = 8;
+        }
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+}
+
 
 public class Cinema {
+
     private int total_rows;
     private int total_columns;
     private boolean[][] isReserved;
 
 //    private List<Seat> available_seats;
-    private Collection<Seat> available_seats;
+    private Collection<CinemaSeat> available_seats;
 
 
      Cinema() {
@@ -68,7 +77,7 @@ public class Cinema {
 
         for (int i = 1; i <= noOfSeat; i++) {
             for (int j = 1; j <= noOfSeat; j++) {
-                available_seats.add(new Seat(i, j));
+                available_seats.add(new CinemaSeat(i, j));
             }
         }
 
@@ -88,7 +97,7 @@ public class Cinema {
         return total_columns;
     }
 
-    public Collection<Seat> getAvailable_seats() {
+    public Collection<CinemaSeat> getAvailable_seats() {
         return available_seats;
     }
 
@@ -101,16 +110,16 @@ public class Cinema {
         this.total_columns = total_columns;
     }
 
-    public void setAvailable_seats(List<Seat> available_seats) {
+    public void setAvailable_seats(List<CinemaSeat> available_seats) {
         this.available_seats = available_seats;
     }
 
 
 
-    public Seat reservedSeat(int row, int column) {
+    public CinemaSeat reservedSeat(Seat seat) {
 
-        Seat reservedSeat = new Seat(row, column);
-        this.isReserved[--row][--column] = true;
+        CinemaSeat reservedSeat = new CinemaSeat(seat.row, seat.column);
+        this.isReserved[seat.row - 1][seat.column - 1] = true;
         available_seats.remove(reservedSeat);
         return reservedSeat;
     }
