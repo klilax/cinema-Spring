@@ -34,10 +34,10 @@ class Seat {
     }
 }
 
-class CinemaSeat extends Seat {
+class Ticket extends Seat {
     int price;
 
-    CinemaSeat(int row, int column) {
+    Ticket(int row, int column) {
         super(row, column);
         if (this.row <= 4) {
             this.price = 10;
@@ -55,6 +55,15 @@ class CinemaSeat extends Seat {
     }
 }
 
+class PurchasedTicket extends Seat{
+    private String token;
+    private Ticket ticket;
+
+    PurchasedTicket(int row, int column) {
+        super(row, column);
+        token = Token.generate();
+    }
+}
 
 public class Cinema {
 
@@ -63,7 +72,7 @@ public class Cinema {
     private boolean[][] isReserved;
 
 //    private List<Seat> available_seats;
-    private Collection<CinemaSeat> available_seats;
+    private Collection<Ticket> available_seats;
 
 
      Cinema() {
@@ -77,7 +86,7 @@ public class Cinema {
 
         for (int i = 1; i <= noOfSeat; i++) {
             for (int j = 1; j <= noOfSeat; j++) {
-                available_seats.add(new CinemaSeat(i, j));
+                available_seats.add(new Ticket(i, j));
             }
         }
 
@@ -97,7 +106,7 @@ public class Cinema {
         return total_columns;
     }
 
-    public Collection<CinemaSeat> getAvailable_seats() {
+    public Collection<Ticket> getAvailable_seats() {
         return available_seats;
     }
 
@@ -110,15 +119,15 @@ public class Cinema {
         this.total_columns = total_columns;
     }
 
-    public void setAvailable_seats(List<CinemaSeat> available_seats) {
+    public void setAvailable_seats(List<Ticket> available_seats) {
         this.available_seats = available_seats;
     }
 
 
 
-    public CinemaSeat reservedSeat(Seat seat) {
+    public Ticket reservedSeat(Seat seat) {
 
-        CinemaSeat reservedSeat = new CinemaSeat(seat.row, seat.column);
+        Ticket reservedSeat = new Ticket(seat.row, seat.column);
         this.isReserved[seat.row - 1][seat.column - 1] = true;
         available_seats.remove(reservedSeat);
         return reservedSeat;
