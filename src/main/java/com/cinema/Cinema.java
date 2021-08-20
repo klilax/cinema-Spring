@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 class Seat {
-    int row;
-    int column;
+    protected int row;
+    protected int column;
 
 
     public Seat() {
@@ -55,13 +55,45 @@ class Ticket extends Seat {
     }
 }
 
-class PurchasedTicket extends Seat{
+class PurchaseTicket {
     private String token;
     private Ticket ticket;
 
-    PurchasedTicket(int row, int column) {
-        super(row, column);
+    PurchaseTicket(int row, int column) {
+        ticket = new Ticket(row, column);
         token = Token.generate();
+    }
+
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+
+    public Ticket getTicket() {
+        return ticket;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getToken() {
+        return token;
+    }
+}
+
+class ReturnedTicket {
+    private Ticket returned_ticket;
+
+    ReturnedTicket(PurchaseTicket purchaseTicket) {
+        this.returned_ticket = purchaseTicket.getTicket();
+    }
+
+    public void setReturned_ticket(Ticket returned_ticket) {
+        this.returned_ticket = returned_ticket;
+    }
+
+    public Ticket getReturned_ticket() {
+        return returned_ticket;
     }
 }
 
