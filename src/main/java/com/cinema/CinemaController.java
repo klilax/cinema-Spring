@@ -42,17 +42,18 @@ public class CinemaController {
             return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
         }
         PurchaseTicket purchaseTicket = new PurchaseTicket(seat.row, seat.column);
-        cinema.reservedSeat(seat);
+        cinema.reserveSeat(seat);
         tickets.add(purchaseTicket);
         return new ResponseEntity<>(purchaseTicket,HttpStatus.OK);
     }
 
     @PostMapping("/return")
-    public ResponseEntity<?> returnTicket(@RequestBody String token) {
+    public ResponseEntity<?> returnTicket(@RequestBody Token token) {
 
         for (PurchaseTicket ticket : tickets) {
-            if (ticket.getToken().compareTo(token) == 0) {
+            if (token.isValidToken(ticket.getToken())) {
                 tickets.remove(ticket);
+                cinema.freeSeat(ticket);
                 return new ResponseEntity<>(new ReturnedTicket(ticket), HttpStatus.OK);
             }
         }

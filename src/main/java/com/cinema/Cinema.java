@@ -2,6 +2,7 @@ package com.cinema;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 class Seat {
@@ -61,7 +62,7 @@ class PurchaseTicket {
 
     PurchaseTicket(int row, int column) {
         ticket = new Ticket(row, column);
-        token = Token.generate();
+        token = UUID.randomUUID().toString();
     }
 
     public void setTicket(Ticket ticket) {
@@ -157,12 +158,20 @@ public class Cinema {
 
 
 
-    public Ticket reservedSeat(Seat seat) {
+    public void reserveSeat(Seat seat) {
 
         Ticket reservedSeat = new Ticket(seat.row, seat.column);
         this.isReserved[seat.row - 1][seat.column - 1] = true;
         available_seats.remove(reservedSeat);
-        return reservedSeat;
+
+    }
+
+    public void freeSeat(Ticket seat) {
+
+        Ticket reservedSeat = new Ticket(seat.row, seat.column);
+        this.isReserved[seat.row ][seat.column] = false;
+        available_seats.remove(reservedSeat);
+
     }
 
     public boolean isSeatReserved (int row, int column) {
