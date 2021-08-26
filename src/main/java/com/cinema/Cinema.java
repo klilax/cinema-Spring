@@ -104,8 +104,8 @@ public class Cinema {
     private int total_columns;
     private boolean[][] isReserved;
 
-//    private List<Seat> available_seats;
     private Collection<Ticket> available_seats;
+
 
 
      Cinema() {
@@ -139,6 +139,8 @@ public class Cinema {
         return total_columns;
     }
 
+
+
     public Collection<Ticket> getAvailable_seats() {
         return available_seats;
     }
@@ -157,12 +159,12 @@ public class Cinema {
     }
 
 
-
     public void reserveSeat(Seat seat) {
 
         Ticket reservedSeat = new Ticket(seat.row, seat.column);
         this.isReserved[seat.row - 1][seat.column - 1] = true;
         available_seats.remove(reservedSeat);
+
 
     }
 
@@ -172,11 +174,13 @@ public class Cinema {
         this.isReserved[row - 1][column - 1] = false;
         available_seats.remove(reservedSeat);
 
+
     }
 
     public boolean isSeatReserved (int row, int column) {
          return  this.isReserved[--row][--column];
     }
+
 
 
 }

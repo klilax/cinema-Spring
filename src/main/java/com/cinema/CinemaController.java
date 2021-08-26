@@ -27,6 +27,7 @@ class ApiError {
 @RestController
 public class CinemaController {
     Cinema cinema = new Cinema();
+    Stats cinemaStats = new Stats(cinema);
     List<PurchaseTicket> tickets = new ArrayList<>();
 
     @PostMapping("/purchase")
@@ -59,6 +60,16 @@ public class CinemaController {
         }
         ApiError error = new ApiError("Wrong token!");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/stats")
+    public ResponseEntity<?> cinemaStatus(@RequestParam(required = false) String password) {
+        if (!"super_secret".equals(password)) {
+            ApiError error = new ApiError("The password is wrong!");
+            return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+        }
+        cinemaStats.updateStats(tickets, cinema);
+        return new ResponseEntity<>(cinemaStats, HttpStatus.OK);
     }
     
 
