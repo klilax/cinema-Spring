@@ -53,7 +53,7 @@ public class CinemaController {
         for (PurchaseTicket ticket : tickets) {
             if (token.isValidToken(ticket.getToken())) {
                 tickets.remove(ticket);
-                cinema.freeSeat(ticket);
+                cinema.freeSeat(ticket.getTicket().getRow(), ticket.getTicket().getColumn());
                 return new ResponseEntity<>(new ReturnedTicket(ticket), HttpStatus.OK);
             }
         }

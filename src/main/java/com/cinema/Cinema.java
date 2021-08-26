@@ -166,10 +166,10 @@ public class Cinema {
 
     }
 
-    public void freeSeat(Ticket seat) {
+    public void freeSeat(int row, int column) {
 
-        Ticket reservedSeat = new Ticket(seat.row, seat.column);
-        this.isReserved[seat.row ][seat.column] = false;
+        Ticket reservedSeat = new Ticket(row, column);
+        this.isReserved[row - 1][column - 1] = false;
         available_seats.remove(reservedSeat);
 
     }
